@@ -32,17 +32,29 @@ function operate(a, op, b) {
     }
 }
 
+const displayValue = document.querySelector(".display-text")
+
 function populateDisplay(val) {
-    const displayValue = document.querySelector(".display-text")
     displayValue.textContent += val;
 }
 
-const numButtons = document.querySelectorAll(".btn.number")
+function clearDisplay() {
+    displayValue.textContent = "";
+}
 
-console.log(numButtons)
+
+const numButtons = document.querySelectorAll(".btn.number")
+const clearBtn = document.querySelector(".clear");
+
+
+
 
 for (const btn of numButtons) {
     btn.addEventListener('click', () => {
         populateDisplay(btn.textContent)
     })
 }
+
+clearBtn.addEventListener('click', () => {
+    clearDisplay()
+})
