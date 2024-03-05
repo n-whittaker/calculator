@@ -2,6 +2,7 @@ let num1;
 let num2;
 let operator;
 
+
 function add(a, b) {
     return a + b
 }
@@ -29,4 +30,19 @@ function operate(a, op, b) {
     } else {
         return "Invalid operator"
     }
+}
+
+function populateDisplay(val) {
+    const displayValue = document.querySelector(".display-text")
+    displayValue.textContent += val;
+}
+
+const numButtons = document.querySelectorAll(".btn.number")
+
+console.log(numButtons)
+
+for (const btn of numButtons) {
+    btn.addEventListener('click', () => {
+        populateDisplay(btn.textContent)
+    })
 }
