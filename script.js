@@ -8,8 +8,6 @@ const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
 let newNum = true;
 
-
-
 function add(a, b) {
     return a + b
 }
@@ -75,7 +73,6 @@ equalsBtn.addEventListener('click', () => { // Performs calculation
     calculate();
 })
 
-
 for (const btn of opButtons) {      //Operator buttons
     btn.addEventListener('click', () => {
         if (num1 === undefined) {       // Store display value in num1 if empty, if full, calculate.
@@ -89,7 +86,6 @@ for (const btn of opButtons) {      //Operator buttons
                                         //  previously inputted.
         num1 = parseInt(displayValue.textContent);  // This allows for sums of any length like 3 + 2 * 4 / 9
                                                     // without having to press "-" every time
-
     })
 }
 
@@ -97,15 +93,18 @@ function calculate() {
     storeSecondNum()        // Store the display content as the second number, clear the display and then perform the
     clearDisplay();         // calculation, population display with the result.
     let result = operate(num1, operator, num2);
+
+    removeZeros(result)
+}
+
+
+function removeZeros(result) { // Changes 1.5340000 into 1.534
     let decimalsCount;
 
-
-    // The following changes 1.5340000 into 1.534
     if (result === Math.round(result)) { // If integer
-        populateDisplay(result);
+        populateDisplay(result); // Show number in display
     } else {    // If floating point
         let decimals = (Math.round(result) - result);
-
 
         if (decimals < 0) {
             decimalsCount = (decimals.toString().length) - 3;// -3 to account for the "-0." in "-0.535"
@@ -113,11 +112,11 @@ function calculate() {
             decimalsCount = (decimals.toString().length) - 2 ; // -2 to account for the "0." in "0.535"
         }
 
-        // NEED TO CAP AMOUNT OF DECIMALS
-
-        populateDisplay(result.toFixed(decimalsCount))
-        console.log(result, decimals, decimalsCount);
+        if (decimalsCount >= 8) {
+            populateDisplay(result.toFixed(8))
+        } else {
+            populateDisplay(result.toFixed(decimalsCount))
+        }
     }
-
-
 }
+
