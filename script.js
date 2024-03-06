@@ -34,11 +34,9 @@ function operate(a, op, b) {  // Selects the required operation.
     } else if (op === "/") {
         return divide(a, b);
     } else {
-        return "Invalid operator"
+        console.log("Invalid operator")
     }
 }
-
-
 
 
 function populateDisplay(val) {
@@ -89,10 +87,12 @@ clearBtn.addEventListener('click', () => { // Clears display and resets num1
     num1 = undefined;
     num2 = undefined;
     operator = undefined
+    newNum = true;
 })
 
 equalsBtn.addEventListener('click', () => { // Performs calculation
     calculate();
+    newNum = true;
 })
 
 for (const btn of opButtons) {      //Operator buttons
@@ -117,14 +117,18 @@ for (const btn of opButtons) {      //Operator buttons
 }
 
 function calculate() {
-    num2 = parseFloat(displayValue.textContent)       // Store the display content as the second number, clear the display and then perform the
-    clearDisplay();         // calculation, population display with the result.
-    let result = operate(num1, operator, num2);
+    num2 = parseFloat(displayValue.textContent)
 
-    num1 = result;
+    if (num2 === 0 && operator === "/") {
+        alert("You cannot divide by zero!");
+        clearDisplay();
+    } else {// Store the display content as the second number, clear the display and then perform the
+        clearDisplay();         // calculation, population display with the result.
+        let result = operate(num1, operator, num2);
+        num1 = result;
+        populateDisplay(result, 10);
+    }
 
-
-    populateDisplay(result, 10);
 }
 
 
