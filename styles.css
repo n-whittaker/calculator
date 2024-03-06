@@ -47,7 +47,7 @@ body {
 }
 
 .display-text {
-    color: #3f3f3f;
+    color: hsl(0, 0%, 28%);
 }
 
 .buttons {
@@ -58,8 +58,6 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-
-
 }
 
 .btn {
@@ -69,10 +67,20 @@ body {
     font-size: 20px;
     border: none;
     border-radius: 50px;
-    background-color: orange;
+    background-color: hsl(36, 100%, 50%);
 
+}
+
+.btn.operator:hover, .btn.clear:hover    {
+    background-color: hsl(36, 100%, 67%);
 }
 
 .btn.number {
-    background-color: #3f3f3f;
+    background-color: hsl(0, 0%, 28%);
 }
+
+.btn.number:hover {
+    background-color: hsl(0, 0%, 47%);
+}
+
+
