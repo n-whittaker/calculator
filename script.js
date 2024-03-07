@@ -1,8 +1,12 @@
 let num1;
 let num2;
 let operator = "";
+let newNum = true;
+const MAX_LENGTH = 12;
+
 const numButtons = document.querySelectorAll(".btn.number")
 const opButtons = document.querySelectorAll(".btn.operator")
+
 const clearBtn = document.querySelector(".clear");
 const percentBtn = document.querySelector(".percentage")
 const plusMinusBtn = document.querySelector(".plusMinus");
@@ -10,9 +14,7 @@ const backBtn = document.querySelector(".backspace");
 const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
 const point = document.querySelector(".point");
-let newNum = true;
 
-const MAX_LENGTH = 12;
 
 function add(a, b) {
     return a + b
@@ -112,10 +114,14 @@ backBtn.addEventListener('click', () => {
 })
 
 percentBtn.addEventListener('click', () => { // Convert to percentage
-    let textNum = parseFloat(displayValue.textContent);
-    textNum /= 100;
 
-    displayValue.textContent = textNum.toString();
+    if (!newNum) {
+        let textNum = parseFloat(displayValue.textContent);
+        textNum /= 100;
+
+        displayValue.textContent = textNum.toString();
+    }
+
 
 
 })
@@ -141,7 +147,7 @@ equalsBtn.addEventListener('click', () => { // Performs calculation
 })
 
 for (const btn of opButtons) {      //Operator buttons
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (btn) => {
 
         if (num1 === undefined) {     // Fill num1 if num1 empty (would be the case in first number in calculation)
             num1 = parseFloat(displayValue.textContent);
@@ -170,8 +176,43 @@ function calculate() {
         populateDisplay(result, 10);
     }
 
+    console.log(newNum, num1, operator, num2);
+
 }
 
+
+document.addEventListener('keydown', (e) => {
+    let button;
+    let buttonKeys = {
+        "0": ".zero",
+        "1": ".one",
+        "2": ".two",
+        "3": ".three",
+        "4": ".four",
+        "5": ".five",
+        "6": ".six",
+        "7": ".seven",
+        "8": ".eight",
+        "9": ".nine",
+        "*": ".multiply",
+        "-": ".minus",
+        "+": ".plus",
+        "/": ".divide",
+        ".": ".point",
+        "^": ".plusMinus",
+        "Enter": ".equals",
+        "Escape": ".clear",
+        "%": ".percentage",
+        "Backspace": ".backspace",
+    }
+
+    button = document.querySelector(buttonKeys[e.key]);
+
+    button.click();
+
+
+
+})
 
 
 
