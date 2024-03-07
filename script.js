@@ -233,7 +233,7 @@ document.addEventListener('keydown', (e) => {
 })
 
 infoBtn.addEventListener('click', () => {
-    alert("Backspace to delete, escape to clear, ^ for +/-, everything else matches the key")
+    alert(`(BACKSPACE) to delete, (ESC) to clear, ( ^ ) for (+/-), everything else matches the key`)
 })
 
 
