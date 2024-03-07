@@ -72,16 +72,30 @@ body {
 
 }
 
-.btn.operator:hover, .btn.clear:hover    {
+.btn.operator:hover, .btn.equals:hover    {
     background-color: hsl(36, 100%, 67%);
 }
 
-.btn.number {
+.btn.number:hover, .btn.point:hover {
+    background-color: hsl(0, 0%, 47%);
+}
+
+.btn.clear:hover, .btn.plusMinus:hover, .btn.percentage:hover {
+    background-color: hsl(0, 0%, 93%);
+}
+
+
+.btn.number, .btn.point {
     background-color: hsl(0, 0%, 28%);
 }
 
-.btn.number:hover {
-    background-color: hsl(0, 0%, 47%);
+
+.btn.clear, .btn.plusMinus, .btn.percentage {
+    background-color: hsl(0, 0%, 87%);
+    color: hsl(0, 0%, 28%);
+}
+.btn.zero {
+    width: 175px;
 }
 
 

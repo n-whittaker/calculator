@@ -4,9 +4,12 @@ let operator = "";
 const numButtons = document.querySelectorAll(".btn.number")
 const opButtons = document.querySelectorAll(".btn.operator")
 const clearBtn = document.querySelector(".clear");
+const plusMinusBtn = document.querySelector(".plusMinus");
 const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
+const point = document.querySelector(".point");
 let newNum = true;
+
 const MAX_LENGTH = 12;
 
 function add(a, b) {
@@ -29,9 +32,9 @@ function operate(a, op, b) {  // Selects the required operation.
         return add(a, b);
     } else if (op === "-") {
         return subtract(a, b);
-    } else if (op === "*") {
+    } else if (op === "×") {
         return multiply(a, b);
-    } else if (op === "/") {
+    } else if (op === "÷") {
         return divide(a, b);
     } else {
         console.log("Invalid operator")
@@ -46,7 +49,7 @@ function populateDisplay(val) {
         if (displayText.includes('.')) {
             const parts = displayText.split('.');
             const integerPart = parts[0];
-            let decimalPart = parts[1];
+
             // Dynamically adjust decimal places based on the integer part's length
             const maxDecimalPlaces = MAX_LENGTH - integerPart.length - 1; // -1 for the dot
             if (maxDecimalPlaces > 0) {
@@ -62,6 +65,9 @@ function populateDisplay(val) {
         }
     }
     displayValue.textContent = displayText;
+
+
+
 }
 
 
@@ -72,12 +78,19 @@ function clearDisplay() {
 for (const btn of numButtons) { // Number buttons
     btn.addEventListener('click', () => {
 
+
         if (newNum) {
             clearDisplay()
         }
 
-        populateDisplay(displayValue.textContent += btn.textContent);
-        ; // Update display
+        if (displayValue.textContent.includes(".")) {
+            point.setAttribute("disabled", "");
+        } else {
+            point.removeAttribute("disabled");
+        }
+
+        populateDisplay(displayValue.textContent += btn.textContent); // Update display
+
         newNum = false; // Next number will not be a new number
     })
 }
@@ -90,6 +103,16 @@ clearBtn.addEventListener('click', () => { // Clears display and resets num1
     newNum = true;
 })
 
+plusMinusBtn.addEventListener('click', () => { // Clears display and resets num1
+    if (displayValue.textContent.includes("-")) { // If negative then remove minus sign
+        let textArr = displayValue.textContent.split("");
+        textArr.shift();
+        displayValue.textContent = textArr.join("");
+    } else {     // If positive then add minus sign at the front
+        displayValue.textContent = "-" + displayValue.textContent;
+    }
+})
+
 equalsBtn.addEventListener('click', () => { // Performs calculation
     calculate();
     newNum = true;
@@ -98,15 +121,11 @@ equalsBtn.addEventListener('click', () => { // Performs calculation
 for (const btn of opButtons) {      //Operator buttons
     btn.addEventListener('click', () => {
 
-        if (num1 === undefined) {
+        if (num1 === undefined) {     // Fill num1 if num1 empty (would be the case in first number in calculation)
             num1 = parseFloat(displayValue.textContent);
         } else {
             calculate();
         }
-
-
-
-
 
         operator = btn.textContent;     // Set the operator to the operator button the user clicked.
         newNum = true;                  // tells program that the next number will be a number, different number than
@@ -119,7 +138,7 @@ for (const btn of opButtons) {      //Operator buttons
 function calculate() {
     num2 = parseFloat(displayValue.textContent)
 
-    if (num2 === 0 && operator === "/") {
+    if (num2 === 0 && operator === "÷") {
         alert("You cannot divide by zero!");
         clearDisplay();
     } else {// Store the display content as the second number, clear the display and then perform the
