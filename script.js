@@ -6,6 +6,7 @@ const opButtons = document.querySelectorAll(".btn.operator")
 const clearBtn = document.querySelector(".clear");
 const percentBtn = document.querySelector(".percentage")
 const plusMinusBtn = document.querySelector(".plusMinus");
+const backBtn = document.querySelector(".backspace");
 const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
 const point = document.querySelector(".point");
@@ -102,6 +103,12 @@ clearBtn.addEventListener('click', () => { // Clears display and resets num1
     num2 = undefined;
     operator = undefined
     newNum = true;
+})
+
+backBtn.addEventListener('click', () => {
+    let textArr = displayValue.textContent.split("");
+    textArr.pop();
+    displayValue.textContent = textArr.join("");
 })
 
 percentBtn.addEventListener('click', () => { // Convert to percentage

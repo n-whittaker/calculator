@@ -80,7 +80,7 @@ body {
     background-color: hsl(0, 0%, 47%);
 }
 
-.btn.clear:hover, .btn.plusMinus:hover, .btn.percentage:hover {
+.btn.clear:hover, .btn.plusMinus:hover, .btn.percentage:hover, .btn.backspace:hover {
     background-color: hsl(0, 0%, 93%);
 }
 
@@ -90,12 +90,10 @@ body {
 }
 
 
-.btn.clear, .btn.plusMinus, .btn.percentage {
+.btn.clear, .btn.plusMinus, .btn.percentage, .btn.backspace {
     background-color: hsl(0, 0%, 87%);
     color: hsl(0, 0%, 28%);
 }
-.btn.zero {
-    width: 175px;
-}
+
 
 
