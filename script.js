@@ -1,7 +1,8 @@
 let num1;
 let num2;
 let operator = "";
-let newNum = true;
+let isNewNumber = true;
+let isNewCalculation = true;
 const MAX_LENGTH = 12;
 
 const numButtons = document.querySelectorAll(".btn.number")
@@ -13,28 +14,18 @@ const plusMinusBtn = document.querySelector(".plusMinus");
 const backBtn = document.querySelector(".backspace");
 const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
-const point = document.querySelector(".point");
+const pointBtn = document.querySelector(".point");
 const infoBtn = document.querySelector(".info");
-let newCalc = true;
 
 
-function add(a, b) {
-    return a + b
-}
-function subtract(a, b) {
-    return a - b
-}
 
-function multiply(a, b) {
-    return a * b
-}
-
-function divide(a, b) {
-    return a / b
-}
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+const multiply = (a, b) => a * b;
+const divide = (a, b) => a / b;
+const clearDisplay = () => displayValue.textContent = "";
 
 function operate(a, op, b) {  // Selects the required operation
-    console.log("operate: " + a, op, b);
 
     if (op === "+") {
         return add(a, b);
@@ -45,11 +36,9 @@ function operate(a, op, b) {  // Selects the required operation
     } else if (op === "÷") {
         return divide(a, b);
     } else {
-        console.log("Invalid operator")
+        alert("Invalid operator");
     }
 }
-
-
 function populateDisplay(val) {
     let displayText = val.toString();
     if (displayText.length > MAX_LENGTH) {
@@ -73,113 +62,10 @@ function populateDisplay(val) {
         }
     }
     displayValue.textContent = displayText;
-
-
-
-}
-
-
-function clearDisplay() {
-    displayValue.textContent = "";
-}
-
-for (const btn of numButtons) { // Number buttons
-    btn.addEventListener('click', () => {
-
-
-        if (newNum) {
-            clearDisplay()
-        }
-
-        if (displayValue.textContent.includes(".")) {
-            point.setAttribute("disabled", "");
-        } else {
-            point.removeAttribute("disabled");
-        }
-
-        populateDisplay(displayValue.textContent += btn.textContent); // Update display
-
-        newNum = false; // Next number will not be a new number
-    })
-}
-
-clearBtn.addEventListener('click', () => { // Clears display and resets num1
-    clearDisplay()
-    num1 = undefined;
-    num2 = undefined;
-    operator = undefined
-    newNum = true;
-    newCalc = true;
-})
-
-backBtn.addEventListener('click', () => {
-    let textArr = displayValue.textContent.split("");
-    textArr.pop();
-    displayValue.textContent = textArr.join("");
-})
-
-percentBtn.addEventListener('click', () => { // Convert to percentage
-
-    if (!newNum) {
-        let textNum = parseFloat(displayValue.textContent);
-        textNum /= 100;
-
-        displayValue.textContent = textNum.toString();
-    }
-
-
-
-})
-
-plusMinusBtn.addEventListener('click', () => { // Changes positive to negative and vice versa
-    if (!newNum) {
-        if (displayValue.textContent.includes("-")) { // If negative then remove minus sign
-            let textArr = displayValue.textContent.split("");
-            textArr.shift();
-            displayValue.textContent = textArr.join("");
-        } else {     // If positive then add minus sign at the front
-            displayValue.textContent = "-" + displayValue.textContent;
-        }
-    }
-
-
-
-})
-
-equalsBtn.addEventListener('click', () => { // Performs calculation
-    calculate();
-    newNum = true;
-    newCalc = true;
-})
-
-for (const btn of opButtons) {      //Operator buttons
-    btn.addEventListener('click', () => {
-        console.log(newCalc, newNum, num1, num2)
-
-        if (num1 === undefined) {     // Fill num1 if num1 empty (would be the case in first number in calculation)
-            num1 = parseFloat(displayValue.textContent);
-        } else if (newCalc === true) {
-            num1 = parseFloat(displayValue.textContent);
-            num2 = parseFloat(displayValue.textContent);
-            calculate();
-        } else if (num1 && !num2) {
-            num2 = parseFloat(displayValue.textContent);
-            calculate();
-        }
-
-        operator = btn.textContent;     // Set the operator to the operator button the user clicked.
-        newNum = true;                  // tells program that the next number will be a number, different number than
-                                        //  previously inputted.
-          // This allows for sums of any length like 3 + 2 * 4 / 9
-                                                    // without having to press "-" every time
-    })
 }
 
 function calculate() {
-
     num2 = parseFloat(displayValue.textContent);
-
-
 
     if (num2 === 0 && operator === "÷") {
         alert("You cannot divide by zero!");
@@ -192,13 +78,99 @@ function calculate() {
     }
 
     num2 = undefined;
-    newCalc = false;
-    console.log("calc: " +  newCalc, newNum, num1, operator, num2);
-
-
+    isNewCalculation = false;
 }
 
 
+
+for (const btn of numButtons) { // Number buttons
+    btn.addEventListener('click', () => {
+        if (isNewNumber) {
+            clearDisplay()
+            if (btn.textContent === ".") {
+                displayValue.textContent = "0"; // Start with 0 if "." is the first input on new entry
+            }
+        }
+
+        const currentDisplay = displayValue.textContent;
+        if (btn.textContent === "." && currentDisplay.includes(".")) {
+            return; // Do nothing if trying to add a second decimal point
+        } else {
+            displayValue.textContent += btn.textContent; // Update display
+        }
+
+        if (currentDisplay.includes(".")) {
+            pointBtn.setAttribute("disabled", "");
+        } else {
+            pointBtn.removeAttribute("disabled");
+        }
+
+        isNewNumber = false; // Next number will not be a new number
+    })
+}
+
+for (const btn of opButtons) {      //Operator buttons
+    btn.addEventListener('click', () => {
+        console.log(isNewCalculation, isNewNumber, num1, num2)
+
+        if (num1 === undefined) {     // Fill num1 if num1 empty (would be the case in first number in calculation)
+            num1 = parseFloat(displayValue.textContent);
+        } else if (isNewCalculation === true) {
+            num1 = parseFloat(displayValue.textContent);
+            num2 = parseFloat(displayValue.textContent);
+            calculate();
+        } else if (num1 && !num2) {
+            num2 = parseFloat(displayValue.textContent);
+            calculate();
+        }
+
+        operator = btn.textContent;     // Set the operator to the operator button the user clicked.
+        isNewNumber = true;                  // tells program that the next number will be a number, different number than
+                                        //  previously inputted.
+        // This allows for sums of any length like 3 + 2 * 4 / 9
+        // without having to press "-" every time
+    })
+}
+clearBtn.addEventListener('click', () => { // Clears display and resets num1
+    clearDisplay()
+    num1 = undefined;
+    num2 = undefined;
+    operator = undefined
+    isNewNumber = true;
+    isNewCalculation = true;
+})
+backBtn.addEventListener('click', () => {
+    let textArr = displayValue.textContent.split("");
+    textArr.pop();
+    displayValue.textContent = textArr.join("");
+})
+percentBtn.addEventListener('click', () => { // Convert to percentage
+    if (!isNewNumber) {
+        let textNum = parseFloat(displayValue.textContent);
+        textNum /= 100;
+
+        displayValue.textContent = textNum.toString();
+    }
+})
+plusMinusBtn.addEventListener('click', () => { // Changes positive to negative and vice versa
+    if (!isNewNumber) {
+        if (displayValue.textContent.includes("-")) { // If negative then remove minus sign
+            let textArr = displayValue.textContent.split("");
+            textArr.shift();
+            displayValue.textContent = textArr.join("");
+        } else {     // If positive then add minus sign at the front
+            displayValue.textContent = "-" + displayValue.textContent;
+        }
+    }
+})
+equalsBtn.addEventListener('click', () => { // Performs calculation
+    calculate();
+    isNewNumber = true;
+    isNewCalculation = true;
+})
+infoBtn.addEventListener('click', () => {
+    alert(`(BACKSPACE) to delete, (ESC) to clear, ( ^ ) for (+/-), everything else matches the key`)
+})
 document.addEventListener('keydown', (e) => {
     let button;
     let buttonKeys = {
@@ -227,13 +199,6 @@ document.addEventListener('keydown', (e) => {
     button = document.querySelector(buttonKeys[e.key]);
 
     button.click();
-
-
-
-})
-
-infoBtn.addEventListener('click', () => {
-    alert(`(BACKSPACE) to delete, (ESC) to clear, ( ^ ) for (+/-), everything else matches the key`)
 })
 
 
