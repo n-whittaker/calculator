@@ -4,6 +4,7 @@ let operator = "";
 const numButtons = document.querySelectorAll(".btn.number")
 const opButtons = document.querySelectorAll(".btn.operator")
 const clearBtn = document.querySelector(".clear");
+const percentBtn = document.querySelector(".percentage")
 const plusMinusBtn = document.querySelector(".plusMinus");
 const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
@@ -103,14 +104,28 @@ clearBtn.addEventListener('click', () => { // Clears display and resets num1
     newNum = true;
 })
 
-plusMinusBtn.addEventListener('click', () => { // Clears display and resets num1
-    if (displayValue.textContent.includes("-")) { // If negative then remove minus sign
-        let textArr = displayValue.textContent.split("");
-        textArr.shift();
-        displayValue.textContent = textArr.join("");
-    } else {     // If positive then add minus sign at the front
-        displayValue.textContent = "-" + displayValue.textContent;
+percentBtn.addEventListener('click', () => { // Convert to percentage
+    let textNum = parseFloat(displayValue.textContent);
+    textNum /= 100;
+
+    displayValue.textContent = textNum.toString();
+
+
+})
+
+plusMinusBtn.addEventListener('click', () => { // Changes positive to negative and vice versa
+    if (!newNum) {
+        if (displayValue.textContent.includes("-")) { // If negative then remove minus sign
+            let textArr = displayValue.textContent.split("");
+            textArr.shift();
+            displayValue.textContent = textArr.join("");
+        } else {     // If positive then add minus sign at the front
+            displayValue.textContent = "-" + displayValue.textContent;
+        }
     }
+
+
+
 })
 
 equalsBtn.addEventListener('click', () => { // Performs calculation
