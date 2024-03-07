@@ -14,6 +14,7 @@ const backBtn = document.querySelector(".backspace");
 const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
 const point = document.querySelector(".point");
+const infoBtn = document.querySelector(".info");
 
 
 function add(a, b) {
@@ -147,7 +148,7 @@ equalsBtn.addEventListener('click', () => { // Performs calculation
 })
 
 for (const btn of opButtons) {      //Operator buttons
-    btn.addEventListener('click', (btn) => {
+    btn.addEventListener('click', () => {
 
         if (num1 === undefined) {     // Fill num1 if num1 empty (would be the case in first number in calculation)
             num1 = parseFloat(displayValue.textContent);
@@ -212,6 +213,10 @@ document.addEventListener('keydown', (e) => {
 
 
 
+})
+
+infoBtn.addEventListener('click', () => {
+    alert("Backspace to delete, escape to clear, ^ for +/-, everything else matches the key")
 })
 
 
