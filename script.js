@@ -15,6 +15,7 @@ const equalsBtn = document.querySelector(".equals");
 const displayValue = document.querySelector(".display-text");
 const point = document.querySelector(".point");
 const infoBtn = document.querySelector(".info");
+let newCalc = true;
 
 
 function add(a, b) {
@@ -32,7 +33,9 @@ function divide(a, b) {
     return a / b
 }
 
-function operate(a, op, b) {  // Selects the required operation.
+function operate(a, op, b) {  // Selects the required operation
+    console.log("operate: " + a, op, b);
+
     if (op === "+") {
         return add(a, b);
     } else if (op === "-") {
@@ -106,6 +109,7 @@ clearBtn.addEventListener('click', () => { // Clears display and resets num1
     num2 = undefined;
     operator = undefined
     newNum = true;
+    newCalc = true;
 })
 
 backBtn.addEventListener('click', () => {
@@ -145,14 +149,21 @@ plusMinusBtn.addEventListener('click', () => { // Changes positive to negative a
 equalsBtn.addEventListener('click', () => { // Performs calculation
     calculate();
     newNum = true;
+    newCalc = true;
 })
 
 for (const btn of opButtons) {      //Operator buttons
     btn.addEventListener('click', () => {
+        console.log(newCalc, newNum, num1, num2)
 
         if (num1 === undefined) {     // Fill num1 if num1 empty (would be the case in first number in calculation)
             num1 = parseFloat(displayValue.textContent);
-        } else {
+        } else if (newCalc === true) {
+            num1 = parseFloat(displayValue.textContent);
+            num2 = parseFloat(displayValue.textContent);
+            calculate();
+        } else if (num1 && !num2) {
+            num2 = parseFloat(displayValue.textContent);
             calculate();
         }
 
@@ -165,7 +176,10 @@ for (const btn of opButtons) {      //Operator buttons
 }
 
 function calculate() {
-    num2 = parseFloat(displayValue.textContent)
+
+    num2 = parseFloat(displayValue.textContent);
+
+
 
     if (num2 === 0 && operator === "÷") {
         alert("You cannot divide by zero!");
@@ -177,7 +191,10 @@ function calculate() {
         populateDisplay(result, 10);
     }
 
-    console.log(newNum, num1, operator, num2);
+    num2 = undefined;
+    newCalc = false;
+    console.log("calc: " +  newCalc, newNum, num1, operator, num2);
+
 
 }
 
