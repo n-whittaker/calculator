@@ -24,7 +24,6 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 const clearDisplay = () => displayValue.textContent = "";
-
 function operate(a, op, b) {  // Selects the required operation
 
     if (op === "+") {
@@ -63,8 +62,9 @@ function populateDisplay(val) {
     }
     displayValue.textContent = displayText;
 }
-
 function calculate() {
+    console.log(isNewCalculation, isNewNumber, num1, operator, num2);
+
     num2 = parseFloat(displayValue.textContent);
 
     if (num2 === 0 && operator === "÷") {
@@ -118,7 +118,7 @@ for (const btn of opButtons) {      //Operator buttons
         } else if (isNewCalculation === true) {
             num1 = parseFloat(displayValue.textContent);
             num2 = parseFloat(displayValue.textContent);
-            calculate();
+            // calculate();
         } else if (num1 && !num2) {
             num2 = parseFloat(displayValue.textContent);
             calculate();
